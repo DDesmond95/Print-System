@@ -2,11 +2,12 @@
 setlocal
 call conda activate phoneprint
 if errorlevel 1 (
+  echo The conda environment "phoneprint" does not exist.
   echo.
-  echo Could not activate the conda environment "phoneprint".
-  echo Create it first with:
+  echo Create it with:
   echo   conda create -n phoneprint python=3.12 -y
-  echo.
+  echo   conda activate phoneprint
+  echo   pip install -r requirements.txt
   pause
   exit /b 1
 )

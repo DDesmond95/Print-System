@@ -1012,248 +1012,391 @@ PAGE = r"""
 <html lang="en" data-theme="auto">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <title>PhonePrint</title>
 
 <style>
 :root {
-  --bg: #f4f5f7;
-  --card: #ffffff;
-  --text: #17181a;
-  --muted: #686d76;
-  --border: #d9dce1;
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --text: #17191d;
+  --muted: #6b7280;
+  --border: #dfe3e8;
   --field: #ffffff;
   --accent: #1769e0;
-  --accentText: #ffffff;
+  --accent-strong: #0e55c5;
+  --accent-soft: #eaf2ff;
+  --accent-text: #ffffff;
   --danger: #b42318;
   --ok: #067647;
-  --shadow: 0 8px 30px rgba(0,0,0,.07);
+  --shadow: 0 10px 35px rgba(20,30,50,.07);
+  --radius: 18px;
 }
-
 html[data-resolved-theme="dark"] {
-  --bg: #101214;
-  --card: #181b1f;
-  --text: #f2f4f7;
-  --muted: #a5abb4;
-  --border: #30343a;
-  --field: #111316;
-  --accent: #7eb0ff;
-  --accentText: #07101f;
+  --bg: #0d1014;
+  --surface: #15191e;
+  --surface-2: #1b2026;
+  --text: #f4f6f8;
+  --muted: #a8afb9;
+  --border: #2d333b;
+  --field: #11151a;
+  --accent: #79aaff;
+  --accent-strong: #94bbff;
+  --accent-soft: #17243a;
+  --accent-text: #07101f;
   --danger: #ff8b83;
   --ok: #75e0a7;
-  --shadow: 0 8px 30px rgba(0,0,0,.25);
+  --shadow: 0 10px 35px rgba(0,0,0,.28);
 }
-
-* { box-sizing:border-box; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
 body {
-  margin:0; background:var(--bg); color:var(--text);
-  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.35;
 }
-.wrap { max-width:820px; margin:auto; padding:18px; }
-.topbar {
-  display:flex; gap:12px; align-items:center; justify-content:space-between;
-  margin-bottom:14px;
+button, input, select { font: inherit; }
+.shell {
+  width: min(1080px, 100%);
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 105px;
 }
-h1 { margin:0; font-size:1.7rem; }
-.subtitle { color:var(--muted); margin:.2rem 0 0; }
+.appbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.brand { display:flex; align-items:center; gap:11px; min-width:0; }
+.logo {
+  width: 42px; height: 42px; border-radius: 13px;
+  background: var(--accent); color: var(--accent-text);
+  display: grid; place-items:center; font-size:21px;
+  box-shadow: var(--shadow); flex:0 0 auto;
+}
+h1 { margin:0; font-size:1.35rem; letter-spacing:-.02em; }
+.subtitle { color:var(--muted); margin:2px 0 0; font-size:.9rem; }
+.theme-select { width:auto; min-width:108px; }
+.layout {
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);
+  gap:16px; align-items:start;
+}
 .card {
-  background:var(--card); border:1px solid var(--border);
-  border-radius:18px; padding:16px; margin:14px 0; box-shadow:var(--shadow);
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:17px;
 }
-.grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
-.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-.grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-@media(max-width:620px) {
-  .grid,.grid3 { grid-template-columns:1fr; }
-  .grid4 { grid-template-columns:1fr 1fr; }
+.card + .card { margin-top:16px; }
+.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; margin-bottom:13px;
 }
-label { font-weight:650; display:block; margin:0 0 6px; }
-input,select,button {
-  width:100%; border:1px solid var(--border); border-radius:11px;
-  background:var(--field); color:var(--text); padding:11px;
-  font:inherit;
+.section-title { font-size:1rem; font-weight:760; letter-spacing:-.01em; }
+.section-note { color:var(--muted); font-size:.84rem; }
+.field { display:flex; flex-direction:column; gap:6px; }
+.field label { font-weight:650; font-size:.9rem; }
+.grid2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+input, select {
+  width:100%; min-height:46px; padding:10px 12px;
+  border:1px solid var(--border); border-radius:12px;
+  background:var(--field); color:var(--text); outline:none;
 }
-button { cursor:pointer; font-weight:700; }
-button.primary {
-  background:var(--accent); color:var(--accentText); border-color:transparent;
-  padding:14px; margin-top:12px;
+input:focus, select:focus {
+  border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);
 }
-button.smallbtn { padding:8px 10px; margin-top:8px; }
-.muted { color:var(--muted); font-size:.92rem; }
+input[type="file"] { padding:8px; }
+.file-drop {
+  border:1px dashed var(--border); border-radius:14px;
+  padding:12px; background:var(--surface-2);
+}
+.page-mode { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.choice input { position:absolute; opacity:0; pointer-events:none; }
+.choice label {
+  display:flex; align-items:center; justify-content:center;
+  min-height:44px; padding:9px 10px; border-radius:11px;
+  border:1px solid var(--border); background:var(--surface-2);
+  cursor:pointer; text-align:center; font-weight:650; font-size:.9rem;
+}
+.choice input:checked + label {
+  border-color:var(--accent); background:var(--accent-soft); color:var(--accent);
+}
+.margins { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.margin-label { color:var(--muted); font-size:.75rem; text-align:center; margin-top:4px; }
+.divider { border:0; border-top:1px solid var(--border); margin:16px 0; }
+.badges { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+.badge {
+  padding:5px 8px; border-radius:999px; border:1px solid var(--border);
+  background:var(--surface-2); color:var(--muted); font-size:.78rem;
+}
+.status-line { min-height:1.2em; color:var(--muted); font-size:.86rem; margin-top:8px; }
+.tip {
+  padding:11px 12px; border-radius:12px;
+  background:var(--surface-2); color:var(--muted); font-size:.85rem;
+}
+.primary, .secondary {
+  width:100%; border-radius:13px; font-weight:760; cursor:pointer;
+}
+.primary {
+  min-height:50px; border:0;
+  background:var(--accent); color:var(--accent-text);
+}
+.primary:hover { background:var(--accent-strong); }
+.secondary {
+  min-height:44px; border:1px solid var(--border);
+  background:var(--field); color:var(--text);
+}
+.message { margin-top:14px; font-weight:650; }
 .ok { color:var(--ok); }
 .bad { color:var(--danger); }
-.section-title { font-size:1.05rem; margin:3px 0 12px; }
-hr { border:0; border-top:1px solid var(--border); margin:16px 0; }
-.badge {
-  display:inline-block; border:1px solid var(--border); border-radius:999px;
-  padding:4px 8px; margin:2px 5px 2px 0; font-size:.82rem; color:var(--muted);
-}
-.job { border-top:1px solid var(--border); padding:11px 0; }
+.queue { margin-top:10px; }
+.job { padding:11px 0; border-top:1px solid var(--border); }
 .job:first-child { border-top:0; }
-#capStatus { min-height:1.4em; }
-.themebox { width:auto; min-width:115px; }
-.hidden { display:none !important; }
+.small { color:var(--muted); font-size:.84rem; }
+.sticky-print { display:none; }
+
+@media(max-width:860px) {
+  .layout { grid-template-columns:1fr; }
+}
+@media(max-width:620px) {
+  .shell { padding:12px; padding-bottom:100px; }
+  .appbar { margin-bottom:12px; }
+  .card { border-radius:16px; padding:14px; }
+  .grid2 { grid-template-columns:1fr; }
+  .margins { grid-template-columns:1fr 1fr; }
+  .desktop-print { display:none; }
+  .sticky-print {
+    position:fixed; left:0; right:0; bottom:0; z-index:50;
+    display:block;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(16px);
+    border-top:1px solid var(--border);
+  }
+  .sticky-inner { width:min(1080px,100%); margin:auto; }
+}
+@media(max-width:420px) {
+  .page-mode { grid-template-columns:1fr; }
+  .theme-select { min-width:92px; }
+}
 </style>
 </head>
 
 <body>
-<div class="wrap">
-
-  <div class="topbar">
-    <div>
-      <h1>PhonePrint</h1>
-      <p class="subtitle">Android → Windows print spooler</p>
+<div class="shell">
+  <header class="appbar">
+    <div class="brand">
+      <div class="logo">🖨️</div>
+      <div>
+        <h1>PhonePrint</h1>
+        <p class="subtitle">Print from your phone through Windows</p>
+      </div>
     </div>
-    <select id="themeMode" class="themebox" aria-label="Theme">
+    <select id="themeMode" class="theme-select" aria-label="Theme">
       <option value="auto">Auto</option>
       <option value="light">Light</option>
       <option value="dark">Dark</option>
     </select>
-  </div>
+  </header>
 
-  <form id="printForm" class="card" enctype="multipart/form-data">
-    <div class="section-title"><b>Document</b></div>
+  <form id="printForm" enctype="multipart/form-data">
+    <div class="layout">
+      <main>
+        <section class="card">
+          <div class="section-head"><div class="section-title">Document</div></div>
 
-    <label>PDF file</label>
-    <input type="file" name="file" accept="application/pdf,.pdf" required>
+          <div class="file-drop">
+            <div class="field">
+              <label for="pdfFile">Choose PDF</label>
+              <input id="pdfFile" type="file" name="file" accept="application/pdf,.pdf" required>
+            </div>
+          </div>
 
-    <div style="height:13px"></div>
+          <hr class="divider">
 
-    <div class="grid">
-      <div>
-        <label>Printer</label>
-        <select name="printer" id="printerSelect">
-        {% for p in printers %}
-          <option value="{{ p.name }}" {% if p.name == default_printer %}selected{% endif %}>
-            {{ p.name }}
-          </option>
-        {% endfor %}
-        </select>
-      </div>
-      <div>
-        <label>PIN</label>
-        <input name="pin" type="password" inputmode="numeric" autocomplete="off" required>
-      </div>
+          <div class="section-head"><div class="section-title">Pages to print</div></div>
+
+          <div class="page-mode">
+            <div class="choice">
+              <input id="pagesAll" type="radio" name="page_mode" value="all" checked>
+              <label for="pagesAll">All pages</label>
+            </div>
+            <div class="choice">
+              <input id="pagesOdd" type="radio" name="page_mode" value="odd">
+              <label for="pagesOdd">Odd only</label>
+            </div>
+            <div class="choice">
+              <input id="pagesEven" type="radio" name="page_mode" value="even">
+              <label for="pagesEven">Even only</label>
+            </div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="field">
+            <label for="pageRange">Custom page range</label>
+            <input id="pageRange" name="page_range" value="all" placeholder="Example: 1-3, 5, 8-10">
+            <div class="small">Examples: <b>all</b>, <b>3</b>, <b>2-7</b>, <b>1-3,5,8-10</b>.</div>
+          </div>
+
+          <input type="hidden" name="odd_even" id="oddEven" value="all">
+
+          <hr class="divider">
+
+          <div class="section-head"><div class="section-title">Layout</div></div>
+
+          <div class="grid2">
+            <div class="field">
+              <label>Orientation</label>
+              <select name="orientation" id="orientation">
+                <option value="portrait">Portrait</option>
+                <option value="landscape">Landscape</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Pages per sheet</label>
+              <select name="nup" id="nup"></select>
+            </div>
+
+            <div class="field">
+              <label>Scaling</label>
+              <select name="scaling">
+                <option value="fit">Fit to printable area</option>
+                <option value="actual">Actual / no enlargement</option>
+                <option value="percent">Custom percentage</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Scale</label>
+              <input type="number" name="scale_percent" value="100" min="10" max="100">
+            </div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="field">
+            <label>Margins (mm)</label>
+            <div class="margins">
+              <div><input type="number" step=".5" name="margin_top" value="5" min="0" max="50"><div class="margin-label">Top</div></div>
+              <div><input type="number" step=".5" name="margin_right" value="5" min="0" max="50"><div class="margin-label">Right</div></div>
+              <div><input type="number" step=".5" name="margin_bottom" value="5" min="0" max="50"><div class="margin-label">Bottom</div></div>
+              <div><input type="number" step=".5" name="margin_left" value="5" min="0" max="50"><div class="margin-label">Left</div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-head">
+            <div class="section-title">Printer settings</div>
+            <div class="section-note">Updates automatically</div>
+          </div>
+
+          <div class="grid2">
+            <div class="field">
+              <label>Paper</label>
+              <select name="paper_id" id="paper"></select>
+            </div>
+            <div class="field">
+              <label>Paper source</label>
+              <select name="source_id" id="source"></select>
+            </div>
+            <div class="field">
+              <label>Copies</label>
+              <input type="number" name="copies" id="copies" value="1" min="1" max="1">
+            </div>
+            <div class="field" id="duplexBox">
+              <label>Two-sided</label>
+              <select name="duplex" id="duplex">
+                <option value="simplex">One-sided</option>
+                <option value="long">Long edge</option>
+                <option value="short">Short edge</option>
+              </select>
+            </div>
+            <div class="field" id="colorBox">
+              <label>Color</label>
+              <select name="color" id="color">
+                <option value="auto">Driver default</option>
+                <option value="color">Color</option>
+                <option value="mono">Black & white</option>
+              </select>
+            </div>
+            <div class="field" id="collateBox">
+              <label>Collate</label>
+              <select name="collate" id="collate">
+                <option value="off">Off</option>
+                <option value="on">On</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Resolution / quality</label>
+              <select id="resolution"></select>
+              <input type="hidden" name="resolution_x" id="resolutionX">
+              <input type="hidden" name="resolution_y" id="resolutionY">
+            </div>
+          </div>
+
+          <div class="tip" style="margin-top:14px">
+            Standard printer options are loaded from the selected Windows printer.
+            Vendor-only options may still require the manufacturer's Windows dialog.
+          </div>
+        </section>
+      </main>
+
+      <aside>
+        <section class="card">
+          <div class="section-head"><div class="section-title">Printer</div></div>
+
+          <div class="field">
+            <label>Select printer</label>
+            <select name="printer" id="printerSelect">
+            {% for p in printers %}
+              <option value="{{ p.name }}" {% if p.name == default_printer %}selected{% endif %}>
+                {{ p.name }}
+              </option>
+            {% endfor %}
+            </select>
+          </div>
+
+          <div class="field" style="margin-top:12px">
+            <label>PIN</label>
+            <input name="pin" type="password" inputmode="numeric" autocomplete="off" required>
+          </div>
+
+          <div id="capStatus" class="status-line">Reading printer capabilities…</div>
+          <div id="printerMeta" class="badges"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-head"><div class="section-title">Print queue</div></div>
+          <button type="button" class="secondary" onclick="refreshJobs()">Refresh queue</button>
+          <div id="jobs" class="queue"></div>
+        </section>
+
+        <section class="card">
+          <div class="section-title">Status</div>
+          <div id="message" class="message">Ready.</div>
+        </section>
+
+        <div class="desktop-print" style="margin-top:16px">
+          <button class="primary" type="submit">Print document</button>
+        </div>
+      </aside>
     </div>
-
-    <p id="capStatus" class="muted">Reading printer capabilities…</p>
-    <div id="printerMeta"></div>
-
-    <hr>
-
-    <div class="section-title"><b>Pages & layout</b></div>
-    <div class="grid">
-      <div>
-        <label>Pages</label>
-        <input name="page_range" value="all" placeholder="all or 1-3,5,8-10">
-      </div>
-      <div>
-        <label>Odd / even</label>
-        <select name="odd_even">
-          <option value="all">All selected pages</option>
-          <option value="odd">Odd only</option>
-          <option value="even">Even only</option>
-        </select>
-      </div>
-      <div>
-        <label>Orientation</label>
-        <select name="orientation" id="orientation">
-          <option value="portrait">Portrait</option>
-          <option value="landscape">Landscape</option>
-        </select>
-      </div>
-      <div>
-        <label>Pages per sheet</label>
-        <select name="nup" id="nup"></select>
-      </div>
-      <div>
-        <label>Scaling</label>
-        <select name="scaling">
-          <option value="fit">Fit to printable cell</option>
-          <option value="actual">Actual / no enlargement</option>
-          <option value="percent">Custom % of fitted size</option>
-        </select>
-      </div>
-      <div>
-        <label>Scale %</label>
-        <input type="number" name="scale_percent" value="100" min="10" max="100">
-      </div>
-    </div>
-
-    <div style="height:13px"></div>
-    <label>Margins (mm): top · right · bottom · left</label>
-    <div class="grid4">
-      <input type="number" step=".5" name="margin_top" value="5" min="0" max="50">
-      <input type="number" step=".5" name="margin_right" value="5" min="0" max="50">
-      <input type="number" step=".5" name="margin_bottom" value="5" min="0" max="50">
-      <input type="number" step=".5" name="margin_left" value="5" min="0" max="50">
-    </div>
-
-    <hr>
-
-    <div class="section-title"><b>Selected printer settings</b></div>
-    <div class="grid">
-      <div>
-        <label>Paper</label>
-        <select name="paper_id" id="paper"></select>
-      </div>
-      <div>
-        <label>Paper source / tray</label>
-        <select name="source_id" id="source"></select>
-      </div>
-      <div>
-        <label>Copies</label>
-        <input type="number" name="copies" id="copies" value="1" min="1" max="1">
-      </div>
-      <div id="duplexBox">
-        <label>Two-sided</label>
-        <select name="duplex" id="duplex">
-          <option value="simplex">One-sided</option>
-          <option value="long">Two-sided · long edge</option>
-          <option value="short">Two-sided · short edge</option>
-        </select>
-      </div>
-      <div id="colorBox">
-        <label>Color</label>
-        <select name="color" id="color">
-          <option value="auto">Driver default</option>
-          <option value="color">Color</option>
-          <option value="mono">Black & white</option>
-        </select>
-      </div>
-      <div id="collateBox">
-        <label>Collate</label>
-        <select name="collate" id="collate">
-          <option value="off">Off</option>
-          <option value="on">On</option>
-        </select>
-      </div>
-      <div>
-        <label>Resolution / quality</label>
-        <select id="resolution"></select>
-        <input type="hidden" name="resolution_x" id="resolutionX">
-        <input type="hidden" name="resolution_y" id="resolutionY">
-      </div>
-    </div>
-
-    <p class="muted">
-      Options above are rebuilt whenever you choose another printer. Driver-specific/private
-      options that Windows does not publish as standard capabilities are preserved in the
-      driver's DEVMODE but cannot be converted automatically into generic web controls.
-    </p>
-
-    <button class="primary" type="submit">PRINT</button>
   </form>
+</div>
 
-  <div id="message" class="card">Ready.</div>
-
-  <div class="card">
-    <div class="section-title"><b>Queue</b></div>
-    <button type="button" onclick="refreshJobs()">Refresh queue</button>
-    <div id="jobs"></div>
+<div class="sticky-print">
+  <div class="sticky-inner">
+    <button class="primary" type="submit" form="printForm">Print document</button>
   </div>
-
 </div>
 
 <script>
@@ -1264,7 +1407,6 @@ const printerMeta = document.getElementById("printerMeta");
 const message = document.getElementById("message");
 let caps = null;
 
-// ---------- Theme ----------
 const themeMode = document.getElementById("themeMode");
 const mediaDark = matchMedia("(prefers-color-scheme: dark)");
 
@@ -1274,14 +1416,24 @@ function applyTheme(mode) {
   const resolved = mode === "auto" ? (mediaDark.matches ? "dark" : "light") : mode;
   document.documentElement.dataset.resolvedTheme = resolved;
 }
-
 themeMode.addEventListener("change", () => applyTheme(themeMode.value));
 mediaDark.addEventListener?.("change", () => {
   if (themeMode.value === "auto") applyTheme("auto");
 });
 applyTheme(localStorage.getItem("phoneprint-theme") || "auto");
 
-// ---------- Printer capabilities ----------
+const pageModeRadios = [...document.querySelectorAll('input[name="page_mode"]')];
+const pageRange = document.getElementById("pageRange");
+const oddEven = document.getElementById("oddEven");
+
+function syncPageMode() {
+  const mode = pageModeRadios.find(r => r.checked)?.value || "all";
+  oddEven.value = mode === "odd" ? "odd" : mode === "even" ? "even" : "all";
+  if (!pageRange.value.trim()) pageRange.value = "all";
+}
+pageModeRadios.forEach(r => r.addEventListener("change", syncPageMode));
+syncPageMode();
+
 function addOption(select, value, text, selected=false) {
   const o = document.createElement("option");
   o.value = value;
@@ -1289,9 +1441,7 @@ function addOption(select, value, text, selected=false) {
   o.selected = selected;
   select.appendChild(o);
 }
-
 function clear(select) { select.innerHTML = ""; }
-
 function defaultMatches(field, value) {
   return Number(caps?.defaults?.[field]) === Number(value);
 }
@@ -1299,8 +1449,9 @@ function defaultMatches(field, value) {
 async function loadCapabilities() {
   const printer = printerSelect.value;
   capStatus.textContent = "Reading printer capabilities…";
+  capStatus.className = "status-line";
   printerMeta.innerHTML = "";
-  form.querySelector("button.primary").disabled = true;
+  document.querySelectorAll(".primary").forEach(b => b.disabled = true);
 
   try {
     const u = new URL("/api/capabilities", location.origin);
@@ -1310,40 +1461,30 @@ async function loadCapabilities() {
     if (!r.ok) throw new Error(data.error || "Capability query failed.");
     caps = data;
 
-    // Metadata
     const p = data.printer;
     let meta = `<span class="badge">${esc(p.driver || "Unknown driver")}</span>`;
-    meta += `<span class="badge">Port: ${esc(p.port || "unknown")}</span>`;
-    if (p.virtual) meta += `<span class="badge">Virtual / file printer</span>`;
+    meta += `<span class="badge">${esc(p.port || "Unknown port")}</span>`;
+    if (p.virtual) meta += `<span class="badge">Virtual printer</span>`;
     printerMeta.innerHTML = meta;
 
-    // Paper
     const paper = document.getElementById("paper");
     clear(paper);
     addOption(paper, "", "Driver default", !data.defaults.paper_id);
     for (const x of data.papers) {
       let label = x.name;
-      if (x.size) label += ` — ${x.size.width_mm} × ${x.size.height_mm} mm`;
+      if (x.size) label += ` · ${x.size.width_mm} × ${x.size.height_mm} mm`;
       addOption(paper, x.id, label, defaultMatches("paper_id", x.id));
     }
 
-    // Sources / trays
     const source = document.getElementById("source");
     clear(source);
     addOption(source, "", "Driver default", !data.defaults.source_id);
-    for (const x of data.bins) {
-      addOption(source, x.id, x.name, defaultMatches("source_id", x.id));
-    }
+    for (const x of data.bins) addOption(source, x.id, x.name, defaultMatches("source_id", x.id));
 
-    // Copies
     const copies = document.getElementById("copies");
     copies.max = Math.max(1, data.max_copies);
-    copies.value = Math.min(
-      Math.max(1, Number(data.defaults.copies || 1)),
-      Math.max(1, data.max_copies)
-    );
+    copies.value = Math.min(Math.max(1, Number(data.defaults.copies || 1)), Math.max(1, data.max_copies));
 
-    // Duplex
     const duplex = document.getElementById("duplex");
     const duplexBox = document.getElementById("duplexBox");
     duplex.disabled = !data.duplex;
@@ -1353,55 +1494,42 @@ async function loadCapabilities() {
     else if (Number(data.defaults.duplex) === 3) duplex.value = "short";
     else duplex.value = "simplex";
 
-    // Color
     const color = document.getElementById("color");
     const colorBox = document.getElementById("colorBox");
     clear(color);
     addOption(color, "auto", "Driver default");
     if (data.color) addOption(color, "color", "Color", Number(data.defaults.color) === 2);
     addOption(color, "mono", "Black & white", Number(data.defaults.color) === 1);
-    colorBox.style.opacity = data.color ? "1" : ".75";
+    colorBox.style.opacity = data.color ? "1" : ".7";
 
-    // Collate
     const collate = document.getElementById("collate");
     const collateBox = document.getElementById("collateBox");
     collate.disabled = !data.collate;
     collateBox.style.opacity = data.collate ? "1" : ".45";
     collate.value = data.collate && Number(data.defaults.collate) === 1 ? "on" : "off";
 
-    // Resolution
     const resolution = document.getElementById("resolution");
     clear(resolution);
     addOption(resolution, "", "Driver default");
     for (const rr of data.resolutions) {
       const v = `${rr.x},${rr.y}`;
-      const selected =
-        Number(data.defaults.quality) === rr.x &&
-        Number(data.defaults.y_resolution) === rr.y;
+      const selected = Number(data.defaults.quality) === rr.x && Number(data.defaults.y_resolution) === rr.y;
       addOption(resolution, v, rr.x === rr.y ? `${rr.x} dpi` : `${rr.x} × ${rr.y} dpi`, selected);
     }
     syncResolution();
 
-    // N-up (software-side; available even if driver doesn't expose N-up)
     const nup = document.getElementById("nup");
     clear(nup);
-    for (const n of data.software_nup) {
-      addOption(nup, n, String(n), n === 1);
-    }
+    for (const n of data.software_nup) addOption(nup, n, n === 1 ? "1 page" : `${n} pages`, n === 1);
 
     capStatus.textContent =
-      `${data.papers.length} paper sizes · ${data.bins.length} sources · ` +
-      `${data.resolutions.length} resolutions · max ${data.max_copies} copies`;
+      `${data.papers.length} paper sizes · ${data.bins.length} sources · ${data.resolutions.length} resolutions`;
+    if (p.virtual) capStatus.textContent += " · May open Save As on Windows";
 
-    if (p.virtual) {
-      capStatus.textContent +=
-        " · Note: file/virtual printers may open a Save As dialog on the laptop.";
-    }
-
-    form.querySelector("button.primary").disabled = false;
+    document.querySelectorAll(".primary").forEach(b => b.disabled = false);
   } catch (err) {
     capStatus.textContent = "Could not read this printer: " + err.message;
-    capStatus.className = "bad";
+    capStatus.className = "status-line bad";
   }
 }
 
@@ -1409,33 +1537,29 @@ function syncResolution() {
   const v = document.getElementById("resolution").value;
   const x = document.getElementById("resolutionX");
   const y = document.getElementById("resolutionY");
-
   if (!v) {
     x.value = "";
     y.value = "";
   } else {
-    const [rx, ry] = v.split(",");
-    x.value = rx;
-    y.value = ry;
+    const parts = v.split(",");
+    x.value = parts[0];
+    y.value = parts[1];
   }
 }
 
 printerSelect.addEventListener("change", loadCapabilities);
 document.getElementById("resolution").addEventListener("change", syncResolution);
 
-// ---------- Printing ----------
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
   syncResolution();
+  syncPageMode();
 
-  message.className = "card";
+  message.className = "message";
   message.textContent = "Uploading and preparing print job…";
 
   try {
-    const r = await fetch("/print", {
-      method: "POST",
-      body: new FormData(form)
-    });
+    const r = await fetch("/print", { method:"POST", body:new FormData(form) });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || "Print failed.");
     message.classList.add("ok");
@@ -1447,11 +1571,10 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// ---------- Queue ----------
 async function refreshJobs() {
   const pin = form.elements.pin.value;
   if (!pin) {
-    document.getElementById("jobs").textContent = "Enter the PIN first.";
+    document.getElementById("jobs").innerHTML = '<div class="small">Enter the PIN first.</div>';
     return;
   }
 
@@ -1464,32 +1587,31 @@ async function refreshJobs() {
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || "Queue read failed.");
 
-    let html = "<h3>PhonePrint jobs</h3>";
-    if (!data.local_jobs.length) html += '<div class="muted">None yet.</div>';
+    let html = "";
+    if (!data.local_jobs.length && !data.windows_jobs.length) {
+      html = '<div class="small">Queue is empty.</div>';
+    }
 
     for (const j of data.local_jobs) {
-      html += `<div class="job"><b>#${j.id}</b> ${esc(j.file)}<br>${esc(j.status)}`;
-      if (j.error) html += `<br><span class="bad">${esc(j.error)}</span>`;
+      html += `<div class="job"><b>#${j.id}</b> ${esc(j.file)}<div class="small">${esc(j.status)}</div>`;
+      if (j.error) html += `<div class="bad small">${esc(j.error)}</div>`;
       html += "</div>";
     }
 
-    html += "<h3>Windows spooler</h3>";
-    if (!data.windows_jobs.length) html += '<div class="muted">Queue is empty.</div>';
-
     for (const j of data.windows_jobs) {
-      html += `<div class="job"><b>#${j.id}</b> ${esc(j.document)}<br>${esc(j.status || "Queued / printing")}`;
-      html += `<br><button class="smallbtn" type="button" onclick="cancelJob(${j.id})">Cancel</button></div>`;
+      html += `<div class="job"><b>Windows #${j.id}</b> ${esc(j.document)}
+        <div class="small">${esc(j.status || "Queued / printing")}</div>
+        <button class="secondary" style="margin-top:8px" type="button" onclick="cancelJob(${j.id})">Cancel job</button></div>`;
     }
 
     document.getElementById("jobs").innerHTML = html;
   } catch (err) {
-    document.getElementById("jobs").innerHTML = `<span class="bad">${esc(err.message)}</span>`;
+    document.getElementById("jobs").innerHTML = `<div class="bad small">${esc(err.message)}</div>`;
   }
 }
 
 async function cancelJob(id) {
   if (!confirm(`Cancel Windows print job #${id}?`)) return;
-
   const body = new URLSearchParams();
   body.set("pin", form.elements.pin.value);
   body.set("printer", printerSelect.value);
